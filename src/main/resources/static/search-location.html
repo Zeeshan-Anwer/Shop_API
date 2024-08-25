@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Product by Location</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Search Product by Location</h1>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form id="searchLocationForm">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required><br>
+            <button type="submit">Search</button>
+        </form>
+        <div id="searchLocationResults"></div>
+    </main>
+
+    <script>
+        document.getElementById('searchLocationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value;
+
+            fetch('/api/products/location/' + encodeURIComponent(location))
+            .then(response => response.json())
+            .then(data => {
+                const searchLocationResultsDiv = document.getElementById('searchLocationResults');
+                searchLocationResultsDiv.innerHTML = data.map(product => `
+                    <div>
+                        <h2>${product.name}</h2>
+                        <p>Buy Price: ${product.buyPrice}</p>
+                        <p>Minimum Sell Price: ${product.minimumSellPrice}</p>
+                        <p>Normal Price: ${product.normalPrice}</p>
+                        <p>Description: ${product.description}</p>
+                        <p>Location: ${product.location}</p>
+                        ${product.pictures.map(picture => `<img src="data:image/jpeg;base64,${picture}" alt="${product.name} Picture">`).join('')}
+                    </div>
+                `).join('');
+            })
+            .catch(error => {
+                console.error('Error searching by location:', error);
+            });
+        });
+    </script>
+</body>
+</html>
