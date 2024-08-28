@@ -18,14 +18,16 @@ import org.springframework.stereotype.Service;
 	    public List<Product> getAllProducts() {
 	        return productRepository.findAll();
 	    }
-
+	    @Override
 	    public List<Product> searchProductByName(String name) {
-	        return productRepository.findByNameContaining(name);
+	        return productRepository.findByNameContainingIgnoreCase(name);
 	    }
 
+	    @Override
 	    public List<Product> searchProductByLocation(String location) {
 	        return productRepository.findByLocation(location);
 	    }
+	    
 	}
 
 

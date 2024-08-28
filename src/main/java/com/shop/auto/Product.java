@@ -1,7 +1,5 @@
 package com.shop.auto;
 
-import java.util.List;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -11,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
+import java.util.List;
 
 @Entity
 public class Product {
@@ -25,72 +24,77 @@ public class Product {
     private double normalPrice;
 
     @ElementCollection
-    @CollectionTable(name = "product_pictures", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "picture", columnDefinition = "BLOB")
-    private List<byte[]> pictures;
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url")
+    private List<String> pictureUrls;
 
-    
     @Column(length = 1000)
     private String description;
 
     private String location; // e.g., A1B2
 
-	public String getName() {
-		return name;
-	}
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public double getBuyPrice() {
-		return buyPrice;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setBuyPrice(double buyPrice) {
-		this.buyPrice = buyPrice;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public double getMinimumSellPrice() {
-		return minimumSellPrice;
-	}
+    public double getBuyPrice() {
+        return buyPrice;
+    }
 
-	public void setMinimumSellPrice(double minimumSellPrice) {
-		this.minimumSellPrice = minimumSellPrice;
-	}
+    public void setBuyPrice(double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
 
-	public double getNormalPrice() {
-		return normalPrice;
-	}
+    public double getMinimumSellPrice() {
+        return minimumSellPrice;
+    }
 
-	public void setNormalPrice(double normalPrice) {
-		this.normalPrice = normalPrice;
-	}
+    public void setMinimumSellPrice(double minimumSellPrice) {
+        this.minimumSellPrice = minimumSellPrice;
+    }
 
+    public double getNormalPrice() {
+        return normalPrice;
+    }
 
-	public List<byte[]> getPictures() {
-		return pictures;
-	}
+    public void setNormalPrice(double normalPrice) {
+        this.normalPrice = normalPrice;
+    }
 
-	public void setPictures(List<byte[]> pictures) {
-		this.pictures = pictures;
-	}
+    public List<String> getPictureUrls() {
+        return pictureUrls;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setPictureUrls(List<String> pictureUrls) {
+        this.pictureUrls = pictureUrls;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-  
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

@@ -3,52 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Product by Location</title>
+    <title>Search by Location</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Search Product by Location</h1>
+        <h1>Search Products by Location</h1>
         <nav>
             <ul>
                 <li><a href="home.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
+                <li><a href="view-products.html">View All Products</a></li>
+                <li><a href="add-product.html">Add Product</a></li>
+                <li><a href="search-product.html">Search by Name</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <form id="searchLocationForm">
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" required><br>
-            <button type="submit">Search</button>
-        </form>
-        <div id="searchLocationResults"></div>
+        <section id="search-by-location-section">
+            <h2>Search Products by Location</h2>
+            <form id="searchByLocationForm">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required><br><br>
+
+                <button type="submit">Search</button>
+            </form>
+
+            <div id="search-results"></div>
+        </section>
     </main>
 
     <script>
-        document.getElementById('searchLocationForm').addEventListener('submit', function(event) {
+        document.getElementById('searchByLocationForm').addEventListener('submit', function(event) {
             event.preventDefault();
+
             const location = document.getElementById('location').value;
 
-            fetch('/api/products/location/' + encodeURIComponent(location))
+            fetch(`http://localhost:8080/api/products/location/${location}`)
             .then(response => response.json())
             .then(data => {
-                const searchLocationResultsDiv = document.getElementById('searchLocationResults');
-                searchLocationResultsDiv.innerHTML = data.map(product => `
-                    <div>
-                        <h2>${product.name}</h2>
-                        <p>Buy Price: ${product.buyPrice}</p>
-                        <p>Minimum Sell Price: ${product.minimumSellPrice}</p>
-                        <p>Normal Price: ${product.normalPrice}</p>
-                        <p>Description: ${product.description}</p>
-                        <p>Location: ${product.location}</p>
-                        ${product.pictures.map(picture => `<img src="data:image/jpeg;base64,${picture}" alt="${product.name} Picture">`).join('')}
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = data.map(product => `
+                    <div class="product-card">
+                        <h3>${product.name}</h3>
+                        <p><strong>Buy Price:</strong> ${product.buyPrice}</p>
+                        <p><strong>Minimum Sell Price:</strong> ${product.minimumSellPrice}</p>
+                        <p><strong>Normal Price:</strong> ${product.normalPrice}</p>
+                        <p><strong>Description:</strong> ${product.description}</p>
+                        <p><strong>Location:</strong> ${product.location}</p>
+                        <div class="product-images">
+                            ${product.pictures.map(picture => `
+                                <img src="data:image/jpeg;base64,${picture}" alt="${product.name} Picture">
+                            `).join('')}
+                        </div>
                     </div>
                 `).join('');
             })
             .catch(error => {
-                console.error('Error searching by location:', error);
+                console.error('Error fetching products:', error);
             });
         });
     </script>

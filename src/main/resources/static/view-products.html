@@ -13,28 +13,37 @@
             <ul>
                 <li><a href="home.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
+				<li><a href="search-product.html">Search by Name</a></li>
+				<li><a href="search-location.html">Search by Location</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <div id="products"></div>
+        <section id="products-section">
+            <h2>All Products</h2>
+            <div id="products" class="product-list"></div>
+        </section>
     </main>
 
     <script>
-        fetch('/api/products/viewAllProduct')
+        fetch('http://localhost:8080/api/products/viewAllProduct')
         .then(response => response.json())
         .then(data => {
             const productsDiv = document.getElementById('products');
             productsDiv.innerHTML = data.map(product => `
-                <div>
-                    <h2>${product.name}</h2>
-                    <p>Buy Price: ${product.buyPrice}</p>
-                    <p>Minimum Sell Price: ${product.minimumSellPrice}</p>
-                    <p>Normal Price: ${product.normalPrice}</p>
-                    <p>Description: ${product.description}</p>
-                    <p>Location: ${product.location}</p>
-                    ${product.pictures.map(picture => `<img src="data:image/jpeg;base64,${picture}" alt="${product.name} Picture">`).join('')}
+                <div class="product-card">
+                    <h3>${product.name}</h3>
+                    <p><strong>Buy Price:</strong> ${product.buyPrice}</p>
+                    <p><strong>Minimum Sell Price:</strong> ${product.minimumSellPrice}</p>
+                    <p><strong>Normal Price:</strong> ${product.normalPrice}</p>
+                    <p><strong>Description:</strong> ${product.description}</p>
+                    <p><strong>Location:</strong> ${product.location}</p>
+                    <div class="product-images">
+                        ${product.pictures.map(picture => `
+                            <img src="data:image/jpeg;base64,${picture}" alt="${product.name} Picture">
+                        `).join('')}
+                    </div>
                 </div>
             `).join('');
         })
